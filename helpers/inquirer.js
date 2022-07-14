@@ -72,19 +72,19 @@ export const leerInput = async (message) => {
 
 }
 
-export const listadoTareasBorrar = async (tareas = []) => {
+export const listadoLugares = async (lugares = []) => {
 
-    const choices = tareas.map((tarea, i) => {
+    const choices = lugares.map((lugar, i) => {
         return {
-            value: tarea.id,
-            name: `${((i + 1) + '.') .green } ${tarea.desc}`
+            value: lugar.id,
+            name: `${((i + 1) + '.') .green } ${lugar.name}`
         }
     })
 
     const questions = {
         type: 'list',
         name: 'id',
-        message: 'Seleccione la tarea a borrar',
+        message: 'Seleccione el lugar correcto',
         choices
     }
 
