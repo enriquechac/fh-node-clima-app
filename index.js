@@ -18,7 +18,10 @@ const main = async () => {
                 const lugarInput = await leerInput('Ingrese la ciudad:')
                 const lugares = await busquedas.ciudad(lugarInput)
                 const id = await listadoLugares(lugares)
-                const {name, lat, lng} = lugares.find(l => l.id === id)
+                const { name, lat, lng } = lugares.find(l => l.id === id)
+                
+                busquedas.agregarHistorial(name);
+
                 const {main, weather} = await busquedas.climaLugar(lat, lng) 
 
                 console.clear()
@@ -32,6 +35,14 @@ const main = async () => {
                 console.log(`Descripción: ${(weather[0]?.description + '').cyan }`)
                 break;
         
+            case 2:
+                busquedas.historialCapitalizado.forEach( ( lugar, i ) => {
+                    const idx = `${i + 1}.-`.green
+                    console.log(idx, lugar);
+                    
+                })
+                break;
+            
             default:
                 break;
         }

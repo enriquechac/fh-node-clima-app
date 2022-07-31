@@ -1,13 +1,26 @@
+import fs from "fs"
 
 import axios from "axios"
 
 export class Busquedas {
 
     historial = []
+    dbPath = './db/data.json'
+
+
 
     constructor() {
-        
+        this.leerDB()
     }
+
+    get historialCapitalizado() {
+        return this.historial.map(lugar => {
+            let palabras = lugar.split(" ")
+            palabras = palabras.map( palabra => palabra[0].toUpperCase() + palabra.substring(1))
+            return palabras.join(" ")
+        })
+    }
+
 
     async ciudad(lugar = '') {
         
@@ -73,6 +86,36 @@ export class Busquedas {
 
         }
 
+    }
+
+
+    agregarHistorial(lugar = "") {
+        //Prevenir duplicados
+
+        if (this.historial.includes(lugar.toLocaleLowerCase())) return;
+        
+        this.historial = this.historial.splice(0, 5)
+
+        this.historial.unshift(lugar.toLocaleLowerCase());
+
+        //Grabar en DB
+        this.guardarDB()
+    }
+
+    guardarDB() {
+
+        const payload = {
+            historial: this.historial
+        }
+
+        fs.writeFileSync(this.dbPath, JSON.stringify(payload))
+    }
+
+    leerDB() {
+        if (!fs.existsSync(this.dbPath)) return;        
+        const data = fs.readFileSync(this.dbPath, {encoding: "utf-8"})
+        const {historial} = JSON.parse(data)
+        this.historial = historial;
     }
 
 
