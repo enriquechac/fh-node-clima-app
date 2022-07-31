@@ -16,14 +16,20 @@ const main = async () => {
         switch (opt) {
             case 1:
                 const lugarInput = await leerInput('Ingrese la ciudad:')
-                const lugares = await busquedas.ciudad(lugarInput); 
+                const lugares = await busquedas.ciudad(lugarInput)
                 const id = await listadoLugares(lugares)
-                const lugarSeleccionado = lugares.find( l => l.id === id)
+                const {name, lat, lng} = lugares.find(l => l.id === id)
+                const {main, weather} = await busquedas.climaLugar(lat, lng) 
 
+                console.clear()
                 console.log(`${'\nInformación de la ciudad:\n'.green}`)
-                console.log(`Lugar: ${(lugarSeleccionado.name + '').cyan }`)
-                console.log(`Lat: ${(lugarSeleccionado.lat + '').cyan }`)
-                console.log(`Lng: ${(lugarSeleccionado.lng + '').cyan }`)
+                console.log(`Lugar: ${(name + '').cyan }`)
+                console.log(`Lat: ${(lat + '').cyan }`)
+                console.log(`Lng: ${(lng + '').cyan }`)
+                console.log(`Temperatura: ${( main.temp + '°C').cyan }`)
+                console.log(`Máxima: ${(main.temp_max + '°C').cyan }`)
+                console.log(`Mínima: ${(main.temp_min + '°C').cyan }`)
+                console.log(`Descripción: ${(weather[0]?.description + '').cyan }`)
                 break;
         
             default:

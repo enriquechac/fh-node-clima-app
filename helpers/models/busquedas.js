@@ -42,4 +42,38 @@ export class Busquedas {
     }
 
 
+    async climaLugar(lat = 0, lon = 0) {
+        
+
+        try {
+            
+            const instance = axios.create({
+                baseURL: `https://api.openweathermap.org/data/2.5/weather`,
+                params: {
+                    appid: process.env.OPENWEATHER_KEY,
+                    units: 'metric',
+                    lang: 'es',
+                    lat,
+                    lon
+                }
+            })
+
+            const {data } = await instance.get()
+            const { weather, main } = data
+
+            return {
+                weather,
+                main
+            }
+
+
+        } catch (error) {
+            
+            console.log(error);
+
+        }
+
+    }
+
+
 }
